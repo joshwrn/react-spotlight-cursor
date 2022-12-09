@@ -82,6 +82,10 @@ const ColorContainer = styled.div`
 
   :hover {
     transform: scaleY(1.6);
+    > main > div {
+      filter: blur(0px);
+      opacity: 0.5;
+    }
   }
   input[type="color"] {
     -webkit-appearance: none;
@@ -104,7 +108,9 @@ const ColorContainer = styled.div`
     z-index: -1;
     > div {
       display: flex;
-      filter: blur(40px);
+      filter: blur(35px);
+      opacity: 1;
+      transition: filter 0.5s ease-in-out, opacity 0.5s ease-in-out;
     }
   }
 `
