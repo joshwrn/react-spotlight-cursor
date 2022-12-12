@@ -16,11 +16,11 @@ const Wrapper = styled(motion.div)<{ css: CSSProps }>`
   transition: background-color 0.2s ease-in-out;
   position: relative;
   overflow: hidden;
-  :hover {
+  /* :hover {
     ${StyledSpotLight} {
       opacity: 0.25;
     }
-  }
+  } */
   ${({ css }) => css}
 `
 

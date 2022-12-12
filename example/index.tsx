@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   overflow: hidden;
   z-index: -1;
   gap: 50px;
-  color: #ffffff94;
+  color: #ffffffbd;
   font-family: sans-serif;
   user-select: none;
 `
@@ -41,7 +41,7 @@ const Demo = styled.div`
   cursor: pointer;
   overflow: hidden;
   :hover {
-    border-color: #ffffff1f;
+    border-color: #ffffff55;
   }
 `
 const ItemWrapper = styled.div`
@@ -59,19 +59,37 @@ const ColorWrapper = styled.div`
     cursor: pointer;
     background-color: transparent;
     border: none;
-    color: #ffffff65;
+    color: #ffffffbd;
     font-size: 14px;
     font-weight: 500;
     transition: color 0.5s ease-in-out;
-    border: 1px solid #ffffff2a;
+    border: 1px solid #ffffff55;
     cursor: pointer;
     overflow: hidden;
     padding: 10px 20px;
     border-radius: 8px;
     transition: color 0.5s ease-in-out, border-color 0.5s ease-in-out;
     :hover {
-      color: #ffffff91;
       border-color: #ffffff91;
+    }
+  }
+  > input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: linear-gradient(to right, #000000 0%, #ffffffa6 100%);
+    outline: none;
+    height: 32px;
+    overflow-y: hidden;
+    border-radius: 20px;
+    ::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border: 1px solid #ffffff;
+      cursor: pointer;
+      border-radius: 50%;
     }
   }
 `
@@ -142,6 +160,7 @@ const randomColor = () => {
 }
 
 const App = () => {
+  const [opacity, setOpacity] = React.useState(0.25)
   const [gradient, setGradient] = React.useState({
     color1: `#ffffff`,
     color2: `#ffffff`,
@@ -188,11 +207,19 @@ const App = () => {
   return (
     <Wrapper>
       <ItemWrapper>
-        <SpotlightItem background={g} scaleOnTap={false}>
+        <SpotlightItem background={g} scaleOnTap={false} opacity={opacity}>
           <Demo>Hover me</Demo>
         </SpotlightItem>
       </ItemWrapper>
       <ColorWrapper>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={opacity}
+          onChange={(e) => setOpacity(parseFloat(e.target.value))}
+        />
         <ColorContainer>
           {Object.keys(gradient).map((key) => (
             <input
@@ -204,20 +231,22 @@ const App = () => {
               }
             />
           ))}
-          <main>
-            <div>
-              {Object.keys(gradient).map((key) => (
-                <div
-                  key={key}
-                  style={{
-                    width: `32px`,
-                    height: `32px`,
-                    backgroundColor: gradient[key as keyof Gradient],
-                  }}
-                />
-              ))}
-            </div>
-          </main>
+          {[1, 2, 3].map((i) => (
+            <main key={i}>
+              <div>
+                {Object.keys(gradient).map((key) => (
+                  <div
+                    key={key}
+                    style={{
+                      width: `32px`,
+                      height: `32px`,
+                      backgroundColor: gradient[key as keyof Gradient],
+                    }}
+                  />
+                ))}
+              </div>
+            </main>
+          ))}
         </ColorContainer>
         <button onClick={() => randomize()}>randomize</button>
       </ColorWrapper>

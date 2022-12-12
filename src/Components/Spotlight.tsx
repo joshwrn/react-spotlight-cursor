@@ -74,6 +74,7 @@ export const useSpotLight = ({
   action,
   scaleOnTap = true,
   defaultScale = 0.8,
+  opacity = 0.25,
   background,
 }: Partial<SpotLightProps>): SpotLightReturn => {
   const ref = useRef<HTMLDivElement>(null)
@@ -81,7 +82,6 @@ export const useSpotLight = ({
   const [scale, setScale] = React.useState(defaultScale)
   const [blur, setBlur] = React.useState(30)
   const [tap, setTap] = React.useState(false)
-  const [opacity, setOpacity] = React.useState(0.25)
   const handleMouse = useCallback(
     (e: React.MouseEvent) => {
       const element = ref.current
