@@ -29,32 +29,35 @@ export const SpotLightContainer = styled.div<{
   height: 100%;
   display: flex;
   align-items: center;
-
   justify-content: center;
   top: 0;
   left: 0;
   z-index: -15;
   filter: blur(${({ blur }) => blur ?? 30}px) saturate(0.85);
 `
-export const StyledSpotLight = styled(motion.div)<{ background?: string }>`
+export const StyledSpotLight = styled(motion.div)<{
+  background?: string
+  dimensions: Dimensions
+}>`
   background: ${({ background }) => background ?? DEFAULT_GRADIENT};
   position: absolute;
   pointer-events: none;
-  width: 90%;
-  height: 100%;
+  width: ${({ dimensions }) => dimensions.width ?? 0}px;
+  height: ${({ dimensions }) => dimensions.height ?? 0}px;
   z-index: -1;
 `
 
 const SpotLightComponent: FC<
-  MotionProps & { blur?: number; background?: string }
-> = ({ blur, ...props }) => {
+  MotionProps & { blur?: number; background?: string; dimensions: Dimensions }
+> = ({ blur, dimensions, ...props }) => {
   return (
     <SpotLightContainer blur={blur}>
-      <StyledSpotLight {...props} />
+      <StyledSpotLight dimensions={dimensions} {...props} />
     </SpotLightContainer>
   )
 }
 export type Coords = { x: number; y: number }
+export type Dimensions = { width: number; height: number }
 interface SpotLightProps {
   action: VoidFunction
   scaleOnTap: boolean
@@ -81,6 +84,7 @@ export const useSpotLight = ({
   const [coords, setCoords] = React.useState({ x: 0, y: 0 })
   const [scale, setScale] = React.useState(defaultScale)
   const [blur, setBlur] = React.useState(30)
+  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 })
   const [tap, setTap] = React.useState(false)
   const handleMouse = useCallback(
     (e: React.MouseEvent) => {
@@ -89,13 +93,21 @@ export const useSpotLight = ({
       const bounds = element.getBoundingClientRect()
       const height = element.offsetHeight
       const width = element.offsetWidth
-      const larger = height > width ? height : width
-      setBlur((width * height) / (larger * Math.PI))
+      const larger =
+        height > width
+          ? { side: `height`, value: height }
+          : { side: `width`, value: width }
+      setDimensions({
+        width: larger.side === `width` ? width * 0.8 : width,
+        height: larger.side === `height` ? height * 0.5 : height,
+      })
+      setBlur((width * height) / (larger.value * Math.PI))
       const x = e.clientX - bounds.left - width / 2
       const y = e.clientY - bounds.top - height / 2
       setCoords({ x, y })
-
-      const newScale = Math.sqrt(x * x + y * y * 5) / (width / 4)
+      const scale =
+        larger.side !== `height` ? x * x + y * y * 5 : x * x * 5 + y * y
+      const newScale = Math.sqrt(scale) / (larger.value / 4)
       setScale(newScale > 0.8 ? newScale : 0.8)
 
       action?.()
@@ -111,6 +123,7 @@ export const useSpotLight = ({
       custom={{ coords, scale, tap, opacity, scaleOnTap }}
       blur={blur}
       background={background}
+      dimensions={dimensions}
     />
   )
   return { SpotLight, handleMouse, ref, setTap }

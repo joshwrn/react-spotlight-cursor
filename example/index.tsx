@@ -33,6 +33,11 @@ const Demo = styled.div`
   justify-content: center;
   width: 500px;
   height: 200px;
+  resize: both;
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 90vw;
+  max-height: 60vh;
   margin: 0;
   padding: 0;
   transition: border-color 0.5s ease-in-out;
