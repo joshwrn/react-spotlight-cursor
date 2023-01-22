@@ -15,6 +15,7 @@
     "build": "dts build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
     "prepare": "dts build",
+    "example": "cd example && yarn start",
     "size": "size-limit",
     "start": "dts watch",
     "test": "dts test --passWithNoTests"

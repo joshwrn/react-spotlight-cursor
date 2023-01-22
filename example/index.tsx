@@ -4,7 +4,7 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import styled from "styled-components"
 
-import { SpotlightItem } from "../."
+import { SpotlightItem } from "../src"
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,19 +40,12 @@ const Demo = styled.div`
   max-height: 60vh;
   margin: 0;
   padding: 0;
-  transition: border-color 0.5s ease-in-out;
-  border-radius: 20px;
-  border: 1px solid rgb(255, 255, 255, 0);
   cursor: pointer;
-  overflow: hidden;
-  :hover {
-    border-color: #ffffff55;
-  }
 `
 const ItemWrapper = styled.div`
   display: flex;
-  overflow: hidden;
-  border-radius: 20px;
+  /* overflow: hidden;
+  border-radius: 20px; */
 `
 const ColorWrapper = styled.div`
   display: flex;
