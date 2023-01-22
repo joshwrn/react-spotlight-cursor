@@ -45,8 +45,18 @@ const SpotLightComponent: FC<
     background?: string
     coords: Coords
     timesTaller: number
+    scale: number
+    gradientBlur: number
   }
-> = ({ blur, timesTaller, coords, background, ...props }) => {
+> = ({
+  blur,
+  timesTaller,
+  coords,
+  background,
+  scale,
+  gradientBlur,
+  ...props
+}) => {
   return (
     <SpotLightContainer>
       <motion.div
@@ -81,12 +91,12 @@ const SpotLightComponent: FC<
       >
         <div
           style={{
-            width: `90%`,
-            height: `70%`,
+            width: `100%`,
+            height: `80%`,
             background: `black`,
             position: `absolute`,
             pointerEvents: `none`,
-            filter: `blur(${blur}px)`,
+            filter: `blur(${gradientBlur}px)`,
             zIndex: 5,
           }}
         />
@@ -97,9 +107,8 @@ const SpotLightComponent: FC<
           position: `absolute`,
           width: `100%`,
           aspectRatio: `3/2`,
-          opacity: 0.2,
           borderRadius: `20px`,
-          background: DEFAULT_GRADIENT,
+          background: background ?? DEFAULT_GRADIENT,
           x: coords.x,
           y: coords.y,
           filter: `blur(${blur}px)`,
@@ -136,6 +145,7 @@ export const useSpotLight = ({
   const [coords, setCoords] = React.useState({ x: 0, y: 0 })
   const [scale, setScale] = React.useState(defaultScale)
   const [blur, setBlur] = React.useState(30)
+  const [gradientBlur, setGradientBlur] = React.useState(30)
   const [tap, setTap] = React.useState(false)
   const [timesTaller, setTimesTaller] = React.useState(1)
   const handleMouse = useCallback(
@@ -150,14 +160,17 @@ export const useSpotLight = ({
           ? { side: `height`, value: height }
           : { side: `width`, value: width }
       const area = width * height
-      setBlur(area / (Math.PI * 1.5 * Math.sqrt(area)))
 
       const x = e.clientX - bounds.left - width / 2
       const y = e.clientY - bounds.top - height / 2
       setCoords({ x, y })
       const scale = x * x + y * y * 2
       const newScale = Math.sqrt(scale) / (larger.value / 4)
-      setScale(newScale > 0.8 ? newScale : 0.8)
+      const adjustedScale = newScale > 0.8 ? newScale : 0.8
+
+      setBlur(area / (4 * adjustedScale * Math.sqrt(area)))
+      setGradientBlur(area / (Math.PI * 1.5 * Math.sqrt(area)))
+      setScale(adjustedScale)
       const divided = height / width
 
       setTimesTaller(divided > 1 ? divided : 1)
@@ -173,6 +186,8 @@ export const useSpotLight = ({
       variants={variants}
       custom={{ coords, scale, tap, opacity, scaleOnTap }}
       blur={blur}
+      gradientBlur={gradientBlur}
+      scale={scale}
       coords={coords}
       background={background}
       timesTaller={timesTaller}

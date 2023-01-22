@@ -158,7 +158,7 @@ const randomColor = () => {
 }
 
 const App = () => {
-  const [opacity, setOpacity] = React.useState(0.25)
+  const [opacity, setOpacity] = React.useState(0.4)
   const [gradient, setGradient] = React.useState({
     color1: `#ffffff`,
     color2: `#ffffff`,

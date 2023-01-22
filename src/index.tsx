@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import type { FlattenInterpolation, ThemeProps } from "styled-components"
 import styled from "styled-components"
 
-import { StyledSpotLight, useSpotLight } from "./Components/Spotlight"
+import { useSpotLight } from "./Components/Spotlight"
 
 export type CSSProps = FlattenInterpolation<ThemeProps<unknown>> | undefined
 
