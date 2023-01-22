@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/css": "^11.10.5",
     "@emotion/react": "^11.10.5",
+    "leva": "^0.9.34",
     "react-app-polyfill": "^3.0.0"
   },
   "alias": {
