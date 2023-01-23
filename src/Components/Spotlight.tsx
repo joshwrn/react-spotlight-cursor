@@ -21,9 +21,7 @@ const DEFAULT_GRADIENT = `radial-gradient(
   transparent 100%
   )`
 
-export const SpotLightContainer = styled.div<{
-  blur?: number
-}>`
+export const SpotLightContainer = styled(motion.div)`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -36,32 +34,32 @@ export const SpotLightContainer = styled.div<{
   background: #141414;
   border-radius: 21px;
   overflow: hidden;
-  /* filter: blur(${({ blur }) => blur ?? 30}px) saturate(0.85); */
 `
 
 const SpotLightComponent: FC<
   MotionProps & {
     blur: number
-    background?: string
+    gradient?: string
     coords: Coords
     timesTaller: number
     scale: number
     gradientBlur: number
   }
-> = ({
-  blur,
-  timesTaller,
-  coords,
-  background,
-  scale,
-  gradientBlur,
-  ...props
-}) => {
+> = ({ blur, timesTaller, coords, gradient, scale, gradientBlur, ...props }) => {
   return (
-    <SpotLightContainer>
+    <SpotLightContainer
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+    >
       <motion.div
         style={{
-          // filter: `blur(${blur / 7}px) saturate(0.85)`,
           opacity: 1,
           background: `radial-gradient(
             closest-side, 
@@ -108,7 +106,7 @@ const SpotLightComponent: FC<
           width: `100%`,
           aspectRatio: `3/2`,
           borderRadius: `20px`,
-          background: background ?? DEFAULT_GRADIENT,
+          background: gradient ?? DEFAULT_GRADIENT,
           x: coords.x,
           y: coords.y,
           filter: `blur(${blur}px)`,
@@ -125,7 +123,8 @@ interface SpotLightProps {
   defaultScale: number
   opacity: number
   blur: number
-  background: string
+  ground: string
+  gradient: string
 }
 interface SpotLightReturn {
   SpotLight: JSX.Element
@@ -139,7 +138,7 @@ export const useSpotLight = ({
   scaleOnTap = true,
   defaultScale = 0.8,
   opacity = 0.25,
-  background,
+  gradient,
 }: Partial<SpotLightProps>): SpotLightReturn => {
   const ref = useRef<HTMLDivElement>(null)
   const [coords, setCoords] = React.useState({ x: 0, y: 0 })
@@ -189,7 +188,7 @@ export const useSpotLight = ({
       gradientBlur={gradientBlur}
       scale={scale}
       coords={coords}
-      background={background}
+      gradient={gradient}
       timesTaller={timesTaller}
     />
   )

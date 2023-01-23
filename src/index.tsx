@@ -26,14 +26,14 @@ export const SpotlightItem: FC<
       css?: CSSProps
       opacity?: number
       scaleOnTap?: boolean
-      background?: string
+      gradient?: string
     }
-> = ({ children, css, opacity, scaleOnTap, background, ...props }) => {
+> = ({ children, css, opacity, scaleOnTap, gradient, ...props }) => {
   const [hover, setHover] = useState(false)
   const { ref, handleMouse, SpotLight, setTap } = useSpotLight({
     opacity,
     scaleOnTap,
-    background,
+    gradient,
   })
   return (
     <Wrapper
