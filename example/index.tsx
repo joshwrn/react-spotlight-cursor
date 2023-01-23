@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom"
 import styled from "styled-components"
 import "./global.css"
 
-import { SpotlightItem } from "../src"
+import { SpotlightItem } from "../."
 import { colorsMap, getGradient } from "./gradient"
 
 const Wrapper = styled.div`
@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   overflow: hidden;
   z-index: -1;
   gap: 50px;
-  color: #ffffffbd;
+  color: #ffffffe6;
   font-family: sans-serif;
   user-select: none;
 `
@@ -58,7 +58,7 @@ const ItemWrapper = styled.div`
 `
 
 const App = () => {
-  const [opacity, setOpacity] = React.useState(0.4)
+  const [opacity, setOpacity] = React.useState(0.5)
   useControls({
     opacity: {
       value: opacity,
@@ -68,13 +68,15 @@ const App = () => {
       onChange: (v) => setOpacity(v),
     },
   })
-  const gradient = useControls(`Gradient`, colorsMap, { collapsed: true })
-  const bg = getGradient(gradient)
+  const gradientControls = useControls(`Gradient`, colorsMap, {
+    collapsed: true,
+  })
+  const gradient = getGradient(gradientControls)
 
   return (
     <Wrapper>
       <ItemWrapper>
-        <SpotlightItem background={bg} scaleOnTap={false} opacity={opacity}>
+        <SpotlightItem gradient={gradient} scaleOnTap={false} opacity={opacity}>
           <Demo>
             <p>Hover me</p>
           </Demo>
