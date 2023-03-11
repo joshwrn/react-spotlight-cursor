@@ -38,6 +38,7 @@ export const SpotlightItem: FC<
       children: React.ReactNode
       backgroundBlur?: number
       backgroundOpacity?: number
+      showBackground?: boolean
       css?: CSSProps
       opacity?: number
       scaleOnTap?: boolean
@@ -49,6 +50,7 @@ export const SpotlightItem: FC<
   opacity,
   scaleOnTap,
   gradient,
+  showBackground = false,
   backgroundBlur = 15,
   backgroundOpacity = 0.6,
   ...props
@@ -71,7 +73,7 @@ export const SpotlightItem: FC<
     >
       {children}
       <AnimatePresence>
-        {hover && (
+        {hover && showBackground && (
           <Placeholder
             variants={variants}
             initial="initial"

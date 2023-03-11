@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom"
 import styled from "styled-components"
 import "./global.css"
 
-import { SpotlightItem } from "../src/index"
+import { SpotlightItem } from "../."
 import { colorsMap, getGradient } from "./gradient"
 
 const Wrapper = styled.div`
