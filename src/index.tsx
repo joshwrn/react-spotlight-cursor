@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import React, { useState } from "react"
 
-import type { MotionProps } from "framer-motion"
+import type { MotionProps, Variants } from "framer-motion"
 import { AnimatePresence, motion } from "framer-motion"
 import type { FlattenInterpolation, ThemeProps } from "styled-components"
 import styled from "styled-components"
@@ -19,16 +19,40 @@ const Wrapper = styled(motion.div)<{ css: CSSProps }>`
   ${({ css }) => css}
 `
 
+const Placeholder = styled(motion.div)<{ blur: number; opacity: number }>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 21px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, ${({ opacity }) => opacity});
+  backdrop-filter: blur(${({ blur }) => blur}px);
+  z-index: -16;
+`
+
 export const SpotlightItem: FC<
   MotionProps &
     React.HTMLAttributes<HTMLDivElement> & {
       children: React.ReactNode
+      backgroundBlur?: number
+      backgroundOpacity?: number
       css?: CSSProps
       opacity?: number
       scaleOnTap?: boolean
       gradient?: string
     }
-> = ({ children, css, opacity, scaleOnTap, gradient, ...props }) => {
+> = ({
+  children,
+  css,
+  opacity,
+  scaleOnTap,
+  gradient,
+  backgroundBlur = 15,
+  backgroundOpacity = 0.6,
+  ...props
+}) => {
   const [hover, setHover] = useState(false)
   const { ref, handleMouse, SpotLight, setTap } = useSpotLight({
     opacity,
@@ -46,7 +70,39 @@ export const SpotlightItem: FC<
       {...props}
     >
       {children}
+      <AnimatePresence>
+        {hover && (
+          <Placeholder
+            variants={variants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            blur={backgroundBlur}
+            opacity={backgroundOpacity}
+          />
+        )}
+      </AnimatePresence>
       <AnimatePresence>{hover && SpotLight}</AnimatePresence>
     </Wrapper>
   )
+}
+
+const variants: Variants = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+    transition: {
+      type: `tween`,
+      duration: 0.2,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      type: `tween`,
+      duration: 0.8,
+    },
+  },
 }

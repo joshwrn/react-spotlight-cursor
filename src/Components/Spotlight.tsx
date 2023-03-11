@@ -30,10 +30,11 @@ export const SpotLightContainer = styled(motion.div)`
   justify-content: center;
   top: 0;
   left: 0;
-  z-index: -15;
   background: #141414;
   border-radius: 21px;
   overflow: hidden;
+  z-index: -15;
+  mix-blend-mode: screen;
 `
 
 const SpotLightComponent: FC<
@@ -137,7 +138,7 @@ export const useSpotLight = ({
   action,
   scaleOnTap = true,
   defaultScale = 0.8,
-  opacity = 0.25,
+  opacity = 0.1,
   gradient,
 }: Partial<SpotLightProps>): SpotLightReturn => {
   const ref = useRef<HTMLDivElement>(null)

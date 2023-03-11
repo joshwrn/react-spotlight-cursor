@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom"
 import styled from "styled-components"
 import "./global.css"
 
-import { SpotlightItem } from "../."
+import { SpotlightItem } from "../src/index"
 import { colorsMap, getGradient } from "./gradient"
 
 const Wrapper = styled.div`
@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #000000;
+  /* background-image: url("https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80"); */
   margin: 0;
   padding: 0;
   position: absolute;
